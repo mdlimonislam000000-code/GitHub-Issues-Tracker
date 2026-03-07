@@ -74,34 +74,6 @@ const displayIssues = (issues) => {
         // console.log(loadIssues)
 
 
-
-
-
-        // const loadIssues = async (id) => {
-
-        //     const url = https://phi-lab-server.vercel.app/api/v1/lab/issue/${id};
-
-        //     const res = await fetch(url);
-        //     const data = await res.json();
-
-        //     const issue = data.data;
-
-        //     document.getElementById("issueTitle").innerText = issue.title;
-        //     document.getElementById("issueStatus").innerText = issue.status;
-        //     document.getElementById("issueAuthor").innerText = "Opened by " + issue.author;
-        //     document.getElementById("issueDate").innerText = issue.date;
-
-        //     document.getElementById("issueType").innerText = issue.type;
-        //     document.getElementById("issueDescription").innerText = issue.description;
-
-        //     document.getElementById("issueAssignee").innerText = issue.assignee;
-        //     document.getElementById("issuePriority").innerText = issue.priority;
-
-        //     document.getElementById("my_modal_5").showModal();
-        // };
-        
-
-
         // modal added end
         card.innerHTML = `
             <div class="card ">
@@ -189,20 +161,20 @@ const loadIssues = async () => {
 loadIssues();
 
 
-// document.getElementById("search-btn").addEventListener("click", ()=>{
-//     const input = document.getElementById("input-search")
-//     const searchValue = input.value.trim().toLowerCase();
-//     console.log(searchValue);
+document.getElementById("search-btn").addEventListener("click", ()=>{
+    const input = document.getElementById("input-search")
+    const searchValue = input.value.trim().toLowerCase();
+    console.log(searchValue);
 
-//     fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
-//     .then(res => res.json())
-//     .then(data => {
-//         const allWord = data.data;
-//         console.log(allWord)
+    fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
+    .then(res => res.json())
+    .then(data => {
+        const allWord = data.data;
+        console.log(allWord)
 
-//         const filterIssues = allWord.filter(word =>
-//                 word.title.toLowerCase().includes(searchValue) ||
-//                 word.description.toLowerCase().includes(searchValue));
-//         console.log(filterIssues);
-//     })
-// })
+        const filterIssues = allWord.filter(word =>
+                word.title.toLowerCase().includes(searchValue) ||
+                word.description.toLowerCase().includes(searchValue));
+        displayIssues(filterIssues);
+    })
+})
