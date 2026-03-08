@@ -3,7 +3,6 @@ let allIssues = [];
 window.onload = function () {
     document.getElementById("hero-button-all").style.backgroundColor = "#4A00FF";
     document.getElementById("hero-button-all").style.color = "white";
-    updateCounter();
 };
 
 let heroBUttonAll = document.getElementById("hero-button-all");
