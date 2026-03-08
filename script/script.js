@@ -11,7 +11,7 @@ document.getElementById("sing-in-button").addEventListener("click", function() {
 
     if(userNameValue == 'admin' && passwordValue == 'admin123'){
         alert('login success')
-        window.location.replace("./home.html")
+        window.location.replace("home.html")
     }else{
         alert('something wrong')
         return;

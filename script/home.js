@@ -1,3 +1,5 @@
+
+card.setAttribute("onclick", "my_modal_5.showModal()");
 let allIssues = [];
 
 window.onload = function () {
@@ -62,8 +64,6 @@ const displayIssues = (issues) => {
 
         // modal add
 
-        card.setAttribute("onclick", "my_modal_5.showModal()");
-
         card.onclick = async () => {
 
             const id = issue.id
@@ -110,7 +110,7 @@ const displayIssues = (issues) => {
             <div class="card ">
             <div class="p-4">
                 <div class="flex justify-between">
-                    <img src="${status === 'open' ? './assets/Open-Status.png' : './assets/Closed- Status .png'}" class="w-5 h-5">
+                    <img src="${status === 'open' ? './assets/Open-Status.png' : './assets/Closed- Status.png'}" class="w-5 h-5">
                     <span class="bg-red-50 text-red-500 text-[10px] font-bold px-2 py-1 rounded-full uppercase">${issue.priority}</span>
                     
                 </div>
