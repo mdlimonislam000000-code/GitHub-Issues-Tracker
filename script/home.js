@@ -5,6 +5,33 @@ window.onload = function () {
     document.getElementById("hero-button-all").style.color = "white";
 };
 
+  const manageSpinner = (status) =>{
+    if (status == true){
+        document.getElementById("spinner").classList.remove("hidden");
+        document.getElementById("issue-container").classList.add("hidden");
+    }else{
+        document.getElementById("issue-container").classList.remove("hidden");
+        document.getElementById("spinner").classList.add("hidden");
+    }
+  }
+
+  const issuesContainer = document.getElementById("issue-container")
+
+const loadIssues = async () => {
+    manageSpinner(true)
+    const url = 'https://phi-lab-server.vercel.app/api/v1/lab/issues';
+    const res = await fetch(url);
+    const data = await res.json();
+    allIssues = data.data;
+    displayIssues(allIssues);
+
+    console.log(data);
+    console.log(issuesContainer);
+    manageSpinner((false))
+}
+
+loadIssues();
+
 let heroBUttonAll = document.getElementById("hero-button-all");
 let heroBUttonOpen = document.getElementById("hero-button-open");
 let heroBUttonClosed = document.getElementById("hero-button-closed");
@@ -22,24 +49,30 @@ function resetStyle() {
 }
 
 heroBUttonAll.addEventListener("click", function () {
+    manageSpinner(true)
     resetStyle();
     this.style.backgroundColor = "#4A00FF";
     this.style.color = "white";
     displayIssues(allIssues);
+    manageSpinner(false)
 });
 heroBUttonOpen.addEventListener("click", function () {
+    manageSpinner(true)
     resetStyle();
     this.style.backgroundColor = "#4A00FF";
     this.style.color = "white";
     const openIssues = allIssues.filter(i => i.status.toLowerCase() === 'open');
     displayIssues(openIssues);
+    manageSpinner(false)
 });
 heroBUttonClosed.addEventListener("click", function () {
+    manageSpinner(true)
     resetStyle();
     this.style.backgroundColor = "#4A00FF";
     this.style.color = "white";
     const closedIssues = allIssues.filter(i => i.status.toLowerCase() === 'closed');
     displayIssues(closedIssues);
+    manageSpinner(false)
 });
 
 
@@ -108,7 +141,7 @@ const displayIssues = (issues) => {
             <div class="card ">
             <div class="p-4">
                 <div class="flex justify-between">
-                    <img src="${status === 'open' ? './assets/Open-Status.png' : './assets/Closed- Status .png'}" class="w-5 h-5">
+                    <img src="${status === 'open' ? './assets/Open-Status.png' : './assets/Closed-Status .png'}" class="w-5 h-5">
                     <span class="bg-red-50 text-red-500 text-[10px] font-bold px-2 py-1 rounded-full uppercase">${issue.priority}</span>
                     
                 </div>
@@ -135,23 +168,12 @@ const displayIssues = (issues) => {
 
 
 
-const issuesContainer = document.getElementById("issue-container")
 
-const loadIssues = async () => {
-    const url = 'https://phi-lab-server.vercel.app/api/v1/lab/issues';
-    const res = await fetch(url);
-    const data = await res.json();
-    allIssues = data.data;
-    displayIssues(allIssues);
-
-    console.log(data);
-    console.log(issuesContainer);
-}
-loadIssues();
 
 // search functionality
 
 document.getElementById("search-btn").addEventListener("click", () => {
+    manageSpinner(true)
     const input = document.getElementById("input-search")
     const searchValue = input.value.trim().toLowerCase();
     console.log(searchValue);
@@ -167,4 +189,5 @@ document.getElementById("search-btn").addEventListener("click", () => {
                 word.description.toLowerCase().includes(searchValue));
             displayIssues(filterIssues);
         })
+        manageSpinner(false)
 })

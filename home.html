@@ -27,7 +27,7 @@
 <body>
     <!-- Navbar section -->
 
-    <section class=" max-w-[1600px]  mx-auto">
+    <section class=" max-w-[1600px]  mx-auto sticky z-10 top-0">
         <div class="navbar bg-base-100 shadow-sm p-5 md:p-9 mt-0 flex flex-col md:flex-row">
             <div class="flex-1">
                 <div class="flex items-center gap-2 ">
@@ -87,6 +87,11 @@
         </div>
     </section>
 
+    <!-- loading container -->
+    <section id="spinner" class="flex justify-center items-center mt-5 hidden">
+        <span class="loading loading-infinity loading-xl"></span>
+    </section>
+
     <div id="issue-container"
         class="issuese grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-auto container mt-5 w-11/12">
 
@@ -130,7 +135,7 @@
                     </div>
                     <div class="">
                         <p>Priority:</p>
-                        <span class="status bg-red-50 text-red-500 font-bold px-2 py-1 rounded-full uppercase">High</span>
+                        <span class="status bg-red-50 text-red-500 font-bold px-7 py-4 rounded-full uppercase text-[12px] inline-flex items-center justify-center">High</span>
                     </div>
                 </div>
             </div>
