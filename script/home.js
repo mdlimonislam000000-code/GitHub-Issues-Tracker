@@ -5,17 +5,17 @@ window.onload = function () {
     document.getElementById("hero-button-all").style.color = "white";
 };
 
-  const manageSpinner = (status) =>{
-    if (status == true){
+const manageSpinner = (status) => {
+    if (status == true) {
         document.getElementById("spinner").classList.remove("hidden");
         document.getElementById("issue-container").classList.add("hidden");
-    }else{
+    } else {
         document.getElementById("issue-container").classList.remove("hidden");
         document.getElementById("spinner").classList.add("hidden");
     }
-  }
+}
 
-  const issuesContainer = document.getElementById("issue-container")
+const issuesContainer = document.getElementById("issue-container")
 
 const loadIssues = async () => {
     manageSpinner(true)
@@ -172,22 +172,39 @@ const displayIssues = (issues) => {
 
 // search functionality
 
-document.getElementById("search-btn").addEventListener("click", () => {
-    manageSpinner(true)
+document.getElementById("search-btn").addEventListener("click", async () => {
+
     const input = document.getElementById("input-search")
     const searchValue = input.value.trim().toLowerCase();
     console.log(searchValue);
 
-    fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
-        .then(res => res.json())
-        .then(data => {
-            const allWord = data.data;
-            console.log(allWord)
+    if (searchValue === "") {
+        loadIssues();
+        return;
+    }
+    manageSpinner(true)
 
-            const filterIssues = allWord.filter(word =>
-                word.title.toLowerCase().includes(searchValue) ||
-                word.description.toLowerCase().includes(searchValue));
-            displayIssues(filterIssues);
-        })
-        manageSpinner(false)
+    const url = `https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchValue}`
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if(data.data){
+            displayIssues(data.data);
+        }else{
+            issuesContainer.innerHTML = `<h1 class="text-center text-2xl font-bold mt-10">No Issues Found!</h1>`;
+            const elements = document.getElementsByClassName("totalCount");
+            for (let el of elements) el.innerText = 0;
+        }
+
+        
+        // .then(data => {
+        //     const allWord = data.data;
+        //     console.log(allWord)
+
+        //     const filterIssues = allWord.filter(word =>
+        //         word.title.toLowerCase().includes(searchValue) ||
+        //         word.description.toLowerCase().includes(searchValue));
+        //     displayIssues(filterIssues);
+        // })
+    manageSpinner(false)
 })
