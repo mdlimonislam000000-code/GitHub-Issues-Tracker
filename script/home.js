@@ -64,17 +64,49 @@ const displayIssues = (issues) => {
         // modal add
 
         card.setAttribute("onclick", "my_modal_5.showModal()");
-        // const loadIssues = async (id) => {
-        //     const url = 'https://phi-lab-server.vercel.app/api/v1/lab/issue/{id}';
-        //     const res = await fetch(url);
-        //     const data = await res.json();
-        //     allIssues = data.data;
-        //     console.log(allIssues);
-        // }
-        // console.log(loadIssues)
+
+        card.onclick = async () => {
+
+            const id = issue.id
+            const res = await fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`);
+            const result = await res.json();
+            const singleIssues = result.data;
 
 
-        // modal added end
+            const modal = document.getElementById("my_modal_5");
+
+            const modalStatusBtn = modal.querySelector(".modal-status-btn");
+            if (modalStatusBtn) {
+                modalStatusBtn.innerText = singleIssues.status.toLowerCase();
+
+                if (singleIssues.status.toLowerCase() === 'open') {
+                    modalStatusBtn.className = "text-white px-2 py-1 rounded-full modal-status-btn bg-[#00A96E]";
+                } else {
+                    modalStatusBtn.className = "text-white px-2 py-1 rounded-full modal-status-btn bg-[#A855F7]";
+                }
+            }
+
+            const modalAuthorName = modal.querySelector(".author-name");
+            modalAuthorName.innerText = singleIssues.author;
+
+            const modalDate = modal.querySelector(".modalDate");
+            modalDate.innerText = singleIssues.updatedAt.split("T")[0];
+
+            const modalTitle = modal.querySelector("h1.modalStatus");
+            modalTitle.innerText = singleIssues.title;
+
+            const modalDesc = modal.querySelector("p.description");
+            modalDesc.innerText = singleIssues.description;
+
+            const modalAssignee = modal.querySelector("h1.assigneeName");
+            modalAssignee.innerText = singleIssues.author;
+
+            const modalPriority = modal.querySelector(".status");
+            modalPriority.innerText = singleIssues.priority;
+
+            modal.showModal();
+        };
+
         card.innerHTML = `
             <div class="card ">
             <div class="p-4">
@@ -106,8 +138,6 @@ const displayIssues = (issues) => {
 
 
 
-
-
 const issuesContainer = document.getElementById("issue-container")
 
 const loadIssues = async () => {
@@ -117,64 +147,27 @@ const loadIssues = async () => {
     allIssues = data.data;
     displayIssues(allIssues);
 
-
     console.log(data);
     console.log(issuesContainer);
-    data.data.forEach(allData => {
-        console.log(allData);
-
-        const card = document.createElement("div");
-        const status = allData.status ? allData.status.toLowerCase() : 'open';
-        const borderColor = status === 'open' ? 'border-t-[#00A96E]' : 'border-t-[#A855F7]';
-
-        card.className = `card bg-white shadow-xl border-t-4 ${borderColor} p-4`;
-
-        card.innerHTML = `
-            <div class="card ">
-            <div class="p-4">
-                <div class="flex justify-between">
-                    <img src="${status === 'open' ? './assets/Open-Status.png' : './assets/Closed- Status .png'}" class="w-5 h-5">
-                    <span class="bg-red-50 text-red-500 text-[10px] font-bold px-2 py-1 rounded-full uppercase">${allData.priority}</span>
-                    
-                </div>
-                <div>
-                    <h3 class="font-semibold text-[#1F2937] mt-3">${allData.title}</h3>
-                    <p class="text-[#64748B] text-[12px] mt-2">${allData.description}</p>
-                </div>
-                <div class="flex  mt-3 space-x-1">
-                    <span class=" bg-red-100 px-2 py-2 text-[12px] rounded-full text-red-600 border border-red-400 ml-1 whitespace-nowrap "><i class="fa-solid fa-bug"></i> ${allData.labels[0]}</span>
-                    <span class="bg-[#d977064d] text-[12px] px-2 py-2 rounded-full text-[#ff5e00]  border border-[#D97706] whitespace-nowrap"><i class="fa-solid fa-life-ring"></i> ${allData.labels[1]}</span>
-                </div>
-
-            </div>
-<hr>
-            <div class="p-4">
-                <p>${allData.author}</p>
-                <p>${allData.updatedAt.split("T")[0]}</p>
-            </div>
-        </div>
-        `;
-        issuesContainer.appendChild(card);
-    });
-
 }
 loadIssues();
 
+// search functionality
 
-document.getElementById("search-btn").addEventListener("click", ()=>{
+document.getElementById("search-btn").addEventListener("click", () => {
     const input = document.getElementById("input-search")
     const searchValue = input.value.trim().toLowerCase();
     console.log(searchValue);
 
     fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
-    .then(res => res.json())
-    .then(data => {
-        const allWord = data.data;
-        console.log(allWord)
+        .then(res => res.json())
+        .then(data => {
+            const allWord = data.data;
+            console.log(allWord)
 
-        const filterIssues = allWord.filter(word =>
+            const filterIssues = allWord.filter(word =>
                 word.title.toLowerCase().includes(searchValue) ||
                 word.description.toLowerCase().includes(searchValue));
-        displayIssues(filterIssues);
-    })
+            displayIssues(filterIssues);
+        })
 })
